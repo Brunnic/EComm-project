@@ -3,6 +3,8 @@ import Head from "next/head";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import axios from "axios";
 
 import Navbar from "../../components/layout/Navbar.component";
@@ -14,11 +16,15 @@ interface ResponseData {
     current_page: number;
 }
 
-const ProductPage: NextPage = () => {
+interface ProductPageProps {
+    product: Product;
+}
+
+const ProductPage: NextPage<ProductPageProps> = ({ product }) => {
     return (
         <div>
             <Head>
-                <title>Product Title</title>
+                <title>{product.name}</title>
             </Head>
 
             <Navbar />
@@ -26,10 +32,58 @@ const ProductPage: NextPage = () => {
             <Container>
                 <Grid container spacing={2} sx={{ mt: 4 }}>
                     <Grid item sm={9} xs={12}>
-                        <Box sx={{ bgcolor: "background.paper", p: 2 }}></Box>
+                        <Box
+                            sx={{
+                                bgcolor: "background.paper",
+                                p: 2,
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: 2,
+                            }}
+                        >
+                            <Box sx={{ flex: 1 }}>
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    style={{ width: "100%" }}
+                                />
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    flex: 2,
+                                }}
+                            >
+                                <Typography variant="h3">
+                                    {product.name}
+                                </Typography>
+                                <Typography variant="h6">
+                                    {product.price}$
+                                </Typography>
+                                <Button variant="contained" sx={{ mt: 2 }}>
+                                    Add to cart
+                                </Button>
+                            </Box>
+                        </Box>
+                        <Box sx={{ bgcolor: "background.paper", p: 2, mt: 4 }}>
+                            <Typography variant="h3">Description</Typography>
+                            <Typography variant="body1" sx={{ mt: 2 }}>
+                                {product.description}
+                            </Typography>
+                        </Box>
                     </Grid>
                     <Grid item sm={3} xs={12}>
-                        Side bar options
+                        <Box sx={{ p: 2, bgcolor: "background.paper" }}>
+                            <Typography variant="h6">
+                                Delivery options
+                            </Typography>
+                            <Typography variant="body1">
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Illum eum optio eos soluta et
+                                ad laborum atque officiis odio. Enim.
+                            </Typography>
+                        </Box>
                     </Grid>
                 </Grid>
             </Container>

@@ -1,10 +1,12 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListSubheader from "@mui/material/ListSubheader";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -51,11 +53,14 @@ const Home: NextPage<HomeProps> = ({ categories }) => {
                             }
                         >
                             {categories?.map((category) => (
-                                <ListItem>
-                                    <ListItemText
-                                        key={category.id}
-                                        primary={category.name}
-                                    />
+                                <ListItem key={category.id}>
+                                    <Link href={category.slug}>
+                                        <ListItemButton component="a">
+                                            <ListItemText
+                                                primary={category.name}
+                                            />
+                                        </ListItemButton>
+                                    </Link>
                                 </ListItem>
                             ))}
                         </List>
