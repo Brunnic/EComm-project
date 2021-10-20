@@ -1,12 +1,13 @@
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
+import CardActionArea from "@mui/material/CardActionArea";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 
@@ -53,19 +54,23 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ products }) => {
                             {products.map((p) => (
                                 <Grid item sm={3} xs={6} key={p.id}>
                                     <Card>
-                                        <CardMedia
-                                            component="img"
-                                            src={p.image}
-                                            alt={p.name}
-                                        />
-                                        <CardContent>
-                                            <Typography variant="body1">
-                                                {p.name}
-                                            </Typography>
-                                            <Typography variant="body2">
-                                                {p.price}$
-                                            </Typography>
-                                        </CardContent>
+                                        <Link href={`/product/${p.slug}`}>
+                                            <CardActionArea>
+                                                <CardMedia
+                                                    component="img"
+                                                    src={p.image}
+                                                    alt={p.name}
+                                                />
+                                                <CardContent>
+                                                    <Typography variant="body1">
+                                                        {p.name}
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        {p.price}$
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Link>
                                     </Card>
                                 </Grid>
                             ))}

@@ -1,17 +1,27 @@
 import * as React from "react";
+import Link from "next/link";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
+import MuiLink from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getUser, logout } from "../../redux/actions/auth";
+import { RootState } from "../../redux/store";
 
 const Search = styled("div")(({ theme }) => ({
-    position: "relative",
+    position: "absolute",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     "&:hover": {
@@ -19,9 +29,11 @@ const Search = styled("div")(({ theme }) => ({
     },
     marginLeft: 0,
     width: "80%",
+    top: 14,
     [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(2),
         width: "40%",
+        left: 160,
     },
 }));
 
@@ -53,6 +65,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = () => {
+    const [search, setSearch] = React.useState("");
+    const [searchData, setSearchData] = React.useState<any>([]);
+
+    const user = useSelector((state: RootState) => state.auth.user);
+    const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        if (!user || Object.keys(user).length < 1) {
+            dispatch(getUser());
+        }
+    }, [user]);
+
+    React.useEffect(() => {
+        const getSearchData = async (query: string) => {
+            if (query !== "") {
+                const res = await axios.get(
+                    "http://localhost:8000/api/search/" + query
+                );
+                setSearchData(res.data);
+            } else {
+                setSearchData([]);
+            }
+        };
+
+        getSearchData(search);
+    }, [search]);
+
+    React.useEffect(() => {
+        if (search === "" && searchData.length > 0) {
+            setSearchData([]);
+        }
+    }, [searchData]);
+
     return (
         <AppBar
             position="static"
@@ -67,15 +112,53 @@ const Navbar = () => {
                 >
                     Shopping MA
                 </Typography>
-                <Search>
-                    <SearchIconWrapper>
-                        <SearchIcon />
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ "aria-label": "search" }}
-                    />
-                </Search>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Search>
+                        <SearchIconWrapper>
+                            <SearchIcon />
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search…"
+                            inputProps={{ "aria-label": "search" }}
+                            value={search}
+                            onChange={(e) => {
+                                setSearch(e.target.value);
+                            }}
+                        />
+                    </Search>
+                    <List
+                        sx={{
+                            position: "absolute",
+                            top: 40,
+                            width: "80%",
+                            ml: 4,
+                            zIndex: 2,
+                            display:
+                                searchData && searchData.length > 0
+                                    ? "initial"
+                                    : "none",
+                            bgcolor: "background.paper",
+                        }}
+                    >
+                        {searchData &&
+                            searchData.length > 0 &&
+                            searchData.map((item: any) => (
+                                <ListItem key={item.id}>
+                                    <Link
+                                        href={
+                                            Number.isFinite(item.price)
+                                                ? `/product/${item.slug}`
+                                                : `/${item.slug}`
+                                        }
+                                    >
+                                        <ListItemButton component="a">
+                                            <ListItemText primary={item.name} />
+                                        </ListItemButton>
+                                    </Link>
+                                </ListItem>
+                            ))}
+                    </List>
+                </Box>
                 <Box
                     component="div"
                     sx={{
@@ -104,20 +187,70 @@ const Navbar = () => {
                     </Box>
                     <Box
                         component="div"
-                        sx={{ display: "flex", flexDirection: "row", ml: 1 }}
+                        sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            ml: 1,
+                            gap: 1,
+                        }}
                     >
-                        <PersonIcon />
-                        <Typography
-                            variant="body1"
-                            sx={{
-                                display: {
-                                    xs: "none",
-                                    sm: "block",
-                                },
-                            }}
-                        >
-                            Your Account
-                        </Typography>
+                        {user && Object.keys(user).length > 0 ? (
+                            <>
+                                <Link href="#">
+                                    <MuiLink
+                                        href="#"
+                                        sx={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                        }}
+                                    >
+                                        <PersonIcon />
+                                        <Typography
+                                            variant="button"
+                                            sx={{
+                                                display: {
+                                                    xs: "none",
+                                                    sm: "block",
+                                                },
+                                            }}
+                                        >
+                                            {user.fName}
+                                        </Typography>
+                                    </MuiLink>
+                                </Link>
+                                <MuiLink
+                                    component="button"
+                                    onClick={() => {
+                                        dispatch(logout());
+                                    }}
+                                >
+                                    <Typography>Logout</Typography>
+                                </MuiLink>
+                            </>
+                        ) : (
+                            <Link href="/auth/login">
+                                <MuiLink
+                                    href="/auth/login"
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                    }}
+                                >
+                                    <PersonIcon />
+                                    <Typography
+                                        variant="button"
+                                        sx={{
+                                            display: {
+                                                xs: "none",
+                                                sm: "block",
+                                            },
+                                        }}
+                                    >
+                                        Login
+                                    </Typography>
+                                </MuiLink>
+                            </Link>
+                        )}
                     </Box>
                 </Box>
             </Toolbar>
