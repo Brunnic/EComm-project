@@ -88,9 +88,11 @@ if you configured .env correctly choosing your database name and created it now 
 
 ```console
 php artisan migrate --seed
+```
 
 ## How to run
 after you installed and configured the project you need to run the laravel api, you can do that running this command:
+
 ```console
 php artisan serve
 ```
