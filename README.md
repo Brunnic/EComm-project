@@ -2,12 +2,12 @@
 Ecommerce project using laravel as a backend and Next.js as frontend
 ## Installation Guide
 You need composer and node installed to install and configure this project.
-1.Installing laravel packages
+1. Installing laravel packages
 
 ```console
 composer install
 ```
-2.Installing Next.js packages for the client side
+2. Installing Next.js packages for the client side
 you have to install the required packages for the client side to work.
 all you need to do is:
 
@@ -15,14 +15,14 @@ all you need to do is:
 cd client/
 npm i
 ```
-3.Generate app key for laravel
+3. Generate app key for laravel
 you need to run this command:
 
 ```console
 php artisan key:generate
 ```
 
-4.Configure .env file
+4. Configure .env file
 You have to create .env file or copy .env.example and rename it to ".env", then add your local keys to it, it should look like this:
 
 ```code
@@ -83,7 +83,7 @@ SANCTUM_STATEFUL_DOMAINS=localhost:8000,localhost:3000
 ```
 
 SESSION_DRIVER and SANCTUM_STATEFUL_DOMAINS are required for the authentication to work.
-5.Migrate and seed your database
+5. Migrate and seed your database
 if you configured .env correctly choosing your database name and created it now you have to migrate and seed the database using this command:
 
 ```console
