@@ -4,11 +4,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducers from "./reducers";
 import { AuthState } from "./reducers/auth";
+import { CartState } from "./reducers/cart";
 
 const initialState = {};
 
 export interface RootState {
     auth: AuthState;
+    cart: CartState;
 }
 
 const store = createStore(

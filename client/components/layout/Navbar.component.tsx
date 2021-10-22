@@ -172,18 +172,25 @@ const Navbar = () => {
                         component="div"
                         sx={{ display: "flex", flexDirection: "row" }}
                     >
-                        <ShoppingCartIcon />
-                        <Typography
-                            variant="body1"
-                            sx={{
-                                display: {
-                                    xs: "none",
-                                    sm: "block",
-                                },
-                            }}
-                        >
-                            Cart
-                        </Typography>
+                        <Link href="/cart">
+                            <MuiLink href="/cart" sx={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                        }}>
+                                <ShoppingCartIcon />
+                                <Typography
+                                    variant="body1"
+                                    sx={{
+                                        display: {
+                                            xs: "none",
+                                            sm: "block",
+                                        },
+                                    }}
+                                >
+                                    Cart
+                                </Typography>
+                            </MuiLink>
+                        </Link>
                     </Box>
                     <Box
                         component="div"

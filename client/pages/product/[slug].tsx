@@ -6,10 +6,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 import Navbar from "../../components/layout/Navbar.component";
 
 import { Product } from "../../types/Models";
+import { addToCart } from "../../redux/actions/cart";
 
 interface ResponseData {
     data: Product[];
@@ -21,6 +23,8 @@ interface ProductPageProps {
 }
 
 const ProductPage: NextPage<ProductPageProps> = ({ product }) => {
+    const dispatch = useDispatch();
+
     return (
         <div>
             <Head>
@@ -61,7 +65,9 @@ const ProductPage: NextPage<ProductPageProps> = ({ product }) => {
                                 <Typography variant="h6">
                                     {product.price}$
                                 </Typography>
-                                <Button variant="contained" sx={{ mt: 2 }}>
+                                <Button variant="contained" sx={{ mt: 2 }} onClick={() => {
+                                    dispatch(addToCart({id: product.id, name: product.name, price: product.price}))
+                                }}>
                                     Add to cart
                                 </Button>
                             </Box>

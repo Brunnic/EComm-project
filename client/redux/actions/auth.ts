@@ -25,7 +25,11 @@ export const login =
     (data: LoginData, next: () => void) =>
     async (dispatch: ThunkDispatch<any, void, Action>) => {
         try {
-            const res = await axios.post<any>("/api/auth/login", data);
+            await axios.get("/sanctum/csrf-cookie");
+            const res = await axios.post<any>("/api/auth/login", data, {
+                xsrfHeaderName: "X-XSRF-TOKEN",
+                withCredentials: true
+            });
             dispatch({
                 type: USER_LOGIN,
             });
