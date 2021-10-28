@@ -10,7 +10,7 @@ const imgLoader = ({ src, width }: ImageLoaderProps) => {
 const CarouselItem: React.FC = () => (
     <Paper sx={{ p: 2 }}>
         <Image loader={imgLoader} src=".png" width={600} height={260} />
-        <Typography variant="h2">Carousel Item</Typography>
+        <Typography variant="h2">New Products</Typography>
     </Paper>
 );
 

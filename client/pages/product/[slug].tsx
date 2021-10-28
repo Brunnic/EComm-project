@@ -28,7 +28,7 @@ const ProductPage: NextPage<ProductPageProps> = ({ product }) => {
     return (
         <div>
             <Head>
-                <title>{product.name}</title>
+                <title>{product?.name}</title>
             </Head>
 
             <Navbar />

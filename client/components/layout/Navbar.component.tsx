@@ -1,5 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -71,6 +72,8 @@ const Navbar = () => {
     const user = useSelector((state: RootState) => state.auth.user);
     const dispatch = useDispatch();
 
+    const { push } = useRouter();
+
     React.useEffect(() => {
         if (!user || Object.keys(user).length < 1) {
             dispatch(getUser());
@@ -108,7 +111,15 @@ const Navbar = () => {
                     variant="h6"
                     noWrap
                     component="div"
-                    sx={{ display: { xs: "none", sm: "block" } }}
+                    sx={{
+                        display: { xs: "none", sm: "block" },
+                        ":hover": {
+                            cursor: "pointer",
+                        },
+                    }}
+                    onClick={() => {
+                        push("/");
+                    }}
                 >
                     Shopping MA
                 </Typography>
@@ -173,10 +184,14 @@ const Navbar = () => {
                         sx={{ display: "flex", flexDirection: "row" }}
                     >
                         <Link href="/cart">
-                            <MuiLink href="/cart" sx={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                        }}>
+                            <MuiLink
+                                href="/cart"
+                                underline="none"
+                                sx={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                }}
+                            >
                                 <ShoppingCartIcon />
                                 <Typography
                                     variant="body1"
@@ -205,6 +220,7 @@ const Navbar = () => {
                             <>
                                 <Link href="#">
                                     <MuiLink
+                                        underline="none"
                                         href="#"
                                         sx={{
                                             display: "flex",
@@ -226,6 +242,7 @@ const Navbar = () => {
                                     </MuiLink>
                                 </Link>
                                 <MuiLink
+                                    underline="none"
                                     component="button"
                                     onClick={() => {
                                         dispatch(logout());
@@ -237,6 +254,7 @@ const Navbar = () => {
                         ) : (
                             <Link href="/auth/login">
                                 <MuiLink
+                                    underline="none"
                                     href="/auth/login"
                                     sx={{
                                         display: "flex",
