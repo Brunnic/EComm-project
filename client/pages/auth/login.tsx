@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/auth";
 import Navbar from "../../components/layout/Navbar.component";
+import Footer from "../../components/layout/Footer.component";
 import { RootState } from "../../redux/store";
 
 const LoginPage: NextPage = () => {
@@ -130,6 +131,7 @@ const LoginPage: NextPage = () => {
                     </Grid>
                 </Grid>
             </Container>
+            <Footer />
         </div>
     );
 };

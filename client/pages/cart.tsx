@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector, useDispatch } from "react-redux";
 
 import Navbar from "../components/layout/Navbar.component";
+import Footer from "../components/layout/Footer.component";
 import { RootState } from "../redux/store";
 import CartItem from "../components/Cart/CartItem.component";
 
@@ -66,6 +67,7 @@ const CartPage: NextPage = () => {
                     </Typography>
                 </Box>
             </Container>
+            <Footer />
         </div>
     );
 };

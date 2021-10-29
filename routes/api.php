@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->get(
 
 Route::apiResource('categories', CategoriesController::class);
 Route::apiResource('products', ProductsController::class);
+ROute::get("/product/lowest", [ProductsController::class, 'getLowest']);
 
 Route::get(
     '/search/{query}',

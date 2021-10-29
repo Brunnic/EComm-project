@@ -1,17 +1,20 @@
+import { useState } from "react";
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActionArea from "@mui/material/CardActionArea";
 import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import RadioGroup from "@mui/material/RadioGroup";
+import Radio from "@mui/material/Radio";
 import axios from "axios";
 
 import Navbar from "../components/layout/Navbar.component";
+import Footer from "../components/layout/Footer.component";
+import ProductCard from "../components/Product/ProductCard.component";
 
 import { Category, Product } from "../types/Models";
 
@@ -24,6 +27,31 @@ interface CategoryPageProps {
 }
 
 const CategoryPage: NextPage<CategoryPageProps> = ({ products }) => {
+    const [priceFilter, setPriceFilter] = useState("");
+
+    const filterPrice = (filter: string) => {
+        if (filter === "ascending") {
+            return [...products].sort((first, second) => {
+                if (first.price > second.price) {
+                    return 1;
+                } else if (first.price < second.price) {
+                    return -1;
+                }
+                return 0;
+            });
+        } else if (filter === "descending") {
+            return [...products].sort((first, second) => {
+                if (first.price < second.price) {
+                    return 1;
+                } else if (first.price > second.price) {
+                    return -1;
+                }
+                return 0;
+            });
+        }
+        return products;
+    };
+
     return (
         <div>
             <Head>
@@ -33,12 +61,43 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ products }) => {
             <Navbar />
 
             <Container>
-                <Box sx={{ mt: 2, bgcolor: "background.paper" }}>
-                    Promotions
-                </Box>
-                <Grid container spacing={2} sx={{ mt: 2 }}>
+                <Grid container spacing={4} sx={{ mt: 2 }}>
                     <Grid item sm={3} xs={12}>
-                        Sidebar Showing Categories
+                        <Box sx={{ p: 2, mt: 2, bgcolor: "background.paper" }}>
+                            <Typography variant="h6">Filters</Typography>
+                            <Box>
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">
+                                        Price
+                                    </FormLabel>
+                                    <RadioGroup
+                                        aria-label="price"
+                                        defaultValue="ascending"
+                                        name="radio-buttons-group"
+                                        value={priceFilter}
+                                        onChange={(e) => {
+                                            setPriceFilter(e.target.value);
+                                        }}
+                                    >
+                                        <FormControlLabel
+                                            value="ascending"
+                                            control={<Radio />}
+                                            label="Ascending"
+                                        />
+                                        <FormControlLabel
+                                            value="descending"
+                                            control={<Radio />}
+                                            label="Descending"
+                                        />
+                                        <FormControlLabel
+                                            value="none"
+                                            control={<Radio />}
+                                            label="None"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Box>
+                        </Box>
                     </Grid>
                     <Grid item sm={9} xs={12}>
                         <Grid
@@ -51,33 +110,16 @@ const CategoryPage: NextPage<CategoryPageProps> = ({ products }) => {
                                 pr: 2,
                             }}
                         >
-                            {products.map((p) => (
+                            {filterPrice(priceFilter).map((p) => (
                                 <Grid item sm={3} xs={6} key={p.id}>
-                                    <Card>
-                                        <Link href={`/product/${p.slug}`}>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    component="img"
-                                                    src={p.image}
-                                                    alt={p.name}
-                                                />
-                                                <CardContent>
-                                                    <Typography variant="body1">
-                                                        {p.name}
-                                                    </Typography>
-                                                    <Typography variant="body2">
-                                                        {p.price}$
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Link>
-                                    </Card>
+                                    <ProductCard product={p} />
                                 </Grid>
                             ))}
                         </Grid>
                     </Grid>
                 </Grid>
             </Container>
+            <Footer />
         </div>
     );
 };

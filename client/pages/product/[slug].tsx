@@ -9,6 +9,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 
 import Navbar from "../../components/layout/Navbar.component";
+import Footer from "../../components/layout/Footer.component";
 
 import { Product } from "../../types/Models";
 import { addToCart } from "../../redux/actions/cart";
@@ -65,9 +66,19 @@ const ProductPage: NextPage<ProductPageProps> = ({ product }) => {
                                 <Typography variant="h6">
                                     {product.price}$
                                 </Typography>
-                                <Button variant="contained" sx={{ mt: 2 }} onClick={() => {
-                                    dispatch(addToCart({id: product.id, name: product.name, price: product.price}))
-                                }}>
+                                <Button
+                                    variant="contained"
+                                    sx={{ mt: 2 }}
+                                    onClick={() => {
+                                        dispatch(
+                                            addToCart({
+                                                id: product.id,
+                                                name: product.name,
+                                                price: product.price,
+                                            })
+                                        );
+                                    }}
+                                >
                                     Add to cart
                                 </Button>
                             </Box>
@@ -93,6 +104,7 @@ const ProductPage: NextPage<ProductPageProps> = ({ product }) => {
                     </Grid>
                 </Grid>
             </Container>
+            <Footer />
         </div>
     );
 };

@@ -63,4 +63,10 @@ class ProductsController extends Controller
     {
         //
     }
+
+    public function getLowest()
+    {
+        $products = Product::where('price', '<', '500')->limit(4)->get();
+        return $products;
+    }
 }

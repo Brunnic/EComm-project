@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 
 import { register } from "../../redux/actions/auth";
 import Navbar from "../../components/layout/Navbar.component";
+import Footer from "../../components/layout/Footer.component";
 
 const RegisterPage: NextPage = () => {
     const { push, replace } = useRouter();
@@ -126,6 +127,7 @@ const RegisterPage: NextPage = () => {
                     </Button>
                 </Box>
             </Container>
+            <Footer />
         </div>
     );
 };

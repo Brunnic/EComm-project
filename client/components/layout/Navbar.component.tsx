@@ -218,10 +218,10 @@ const Navbar = () => {
                     >
                         {user && Object.keys(user).length > 0 ? (
                             <>
-                                <Link href="#">
+                                <Link href="/user/profile">
                                     <MuiLink
                                         underline="none"
-                                        href="#"
+                                        href="/user/profile"
                                         sx={{
                                             display: "flex",
                                             flexDirection: "row",
